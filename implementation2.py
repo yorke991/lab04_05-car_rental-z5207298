@@ -30,41 +30,142 @@ class Customer(ABC):
     def cost(self):
         pass
 
-class Order(Customer):
-    def __init__(self, name, email, licenseNo, age, start, end, totalDuration):
+class vehicle(ABC):
+
+    def __init__(self, make, year, registration, model, vehicle_ID, rate):
+        self._make = make
+        self._year = year
+        self._registration = registration
+        self._model = model
+        self._vehicle_ID = vehicle_ID
+        self._rate = rate
+
+    def get_make(self):
+        return self._make;
+    def set_make(make):
+        self._make = make;
+
+    def get_year(self):
+        return self._year;
+    def set_year(year):
+        self._year = year;
+
+    def get_registration(self):
+        return self._registration;
+    def set_registration(registration):
+        self._registration = registration;
+
+    def get_model(self):
+        return self._model;
+    def set_model(model):
+        self._model = model;
+
+    def get_vehicle_ID(self):
+        return self._vehicle_ID;
+    def set_vehicle_ID(vehicle_ID):
+        self._vehicle_ID: vehicle_ID;
+
+    def get_rate(self):
+        return self._rate
+    def set_rate(rate):
+        self._rate = rate;
+
+    def __str__(self):
+        return self._rate + "is the rate, and the cost is: "
+
+
+# class small(vehicle):
+#     def __init__(self, make, year, registration, model, vehicle_ID, rate):
+#         super().__init__(make, year, registration, model, vehicle_ID, rate)
+#
+#     def get_cost(self, start_date, end_date):
+#         return abs(start_date - end_date) * (1)  * self._rate
+#
+#     def __str__(self):
+#         return super().__str__() + "{0}".format(self.get_cost)
+# class medium(vehicle):
+#     def __init__(self, make, year, registration, model, period, vehicle_ID, rate):
+#         super().__init__(make, year, registration, model, period, vehicle_ID, rate)
+#
+#     def get_cost(self, start_date, end_date):
+#         return abs(start_date - end_date) * (1.5) * self._rate
+#
+#     def __str__(self):
+#         return super().__str__() + "{0}".format(self.get_cost)
+# class large(vehicle):
+#     def __init__(self, start_date, end_date, rate):
+#         super().__init__(make, year, registration, model, period, vehicle_ID, rate)
+#
+#     def get_cost(self, start_date, end_date):
+#         return abs(start_date - end_date) * (2) * self._rate
+#
+#     def __str__(self):
+#         return super().__str__() + "{0}".format(self.get_cost)
+# class premium(vehicle):
+#     def __init__(self, make, year, registration, model, period, vehicle_ID, rate):
+#         super().__init__(make, year, registration, model, period, vehicle_ID, rate)
+#
+#     def get_cost(self, start_date, end_date):
+#         return abs(start_date - end_date) * (5) * self._rate
+#
+#     def __str__(self):
+#         return super().__str__() + "{0}".format(self.get_cost)
+
+class Order(Customer, vehicle):
+    def __init__(self, name, email, licenseNo, age, totalDuration, pickup, dropoff, vehicleType, rate):
         super().__init__(name, email, licenseNo, age)
-        self._start = start
-        self._end = end
         self._totalDuration = totalDuration
-
-    def get_start(self):
-        return self._start;
-    def set_start(start):
-        self._start = start;
-
-    def get_end(self):
-        return self._end;
-    def set_end(end):
-        self._end = end;
+        self._pickup = pickup
+        self._dropoff = dropoff
+        self._vehicleType = vehicleType
+        self._rate = rate
 
     def get_totalDuration(self):
         return self._totalDuration;
     def set_totalDuration(totalDuration):
         self._totalDuration = totalDuration;
 
+    def get_pickup(self):
+        return self._pickup;
+    def set_pickup(pickup):
+        self._pickup = pickup;
+
+    def get_dropoff(self):
+        return self._dropoff;
+    def set_dropoff(pickup):
+        self._dropoff = dropoff;
+
+    def get_vehicleType(self):
+        return self._vehicleType;
+    def set_vehicleType(vehicleType):
+        self._vehicleType = vehicleType;
+
+    def get_rate(self):
+        return self._rate;
+    def set_rate(rate):
+        self._rate = rate;
+
+
     # implementation after merging with car
     def cost(self):
-        pass
+        totalCost = int(self.get_rate()) * int(self.get_totalDuration())
+        if self.get_vehicleType() == "large" and int(self.get_totalDuration()) > 7:
+            totalCost *= 0.95
+        if self.get_vehicleType() == "premium" and int(self.get_totalDuration()) > 7:
+            totalCost *= 0.95
+        if self.get_vehicleType() == "premium":
+            totalCost += int(self.get_rate()) * 0.15 * int(self.get_totalDuration())
+        return totalCost
 
     def __str__(self):
-        return Customer.get_name(self) + " (License number: {0})".format(Customer.get_licenseNo(self)) \
-        + " has made a booking from {0}".format(self.get_start()) + " to {0}".format(self.get_end())
+        return Customer.get_name(self) + " will pick up from {0}".format(self.get_dropoff()) + \
+        " and drop off at {0}.".format(self.get_dropoff()) + " Total payable: {0}".format(self.cost())
 
 
 # main function
 print("-----Book a car form-----")
 print("Please enter customer details:")
 customer1 = Order(input("Name: "), input("Email: "), input("License Number: "), input("Age: "),
-input("Booking start date (DDMMYYYY): "), input("Booking end date (DDMMYYYY): "), input("Total booking length (days): "))
+input("Total booking length (days): "), input("Pickup location: "), input("Dropoff location: "),
+input("Vehicle type: "), input("Vehicle rate ($): "))
 print(customer1)
-
